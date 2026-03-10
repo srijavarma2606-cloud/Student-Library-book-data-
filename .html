@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Library Book Data Organiser</title>
+<style>
+body{
+font-family:Arial;
+background:#d8c4f2; /* lilac */
+text-align:center;
+}
+.container{
+width:800px;
+margin:40px auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0px 5px 15px rgba(0,0,0,0.2);
+}
+input{
+padding:8px;
+margin:6px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+button{
+background:#ffd6b3; /* peach */
+border:none;
+padding:8px 14px;
+border-radius:6px;
+cursor:pointer;
+}
+button:hover{
+background:#ffbf99;
+}
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+th,td{
+border:1px solid #ccc;
+padding:8px;
+}
+th{
+background:#bfa3e6;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Student Library Book Data Organiser</h2>
+
+<input id="bookId" placeholder="Book ID">
+<input id="bookName" placeholder="Book Name">
+
+<br>
+
+<button onclick="addBook()">Add Book</button>
+
+<input id="searchBox" placeholder="Search Book">
+<button onclick="searchBook()">Search</button>
+
+<table>
+
+<tr>
+<th>Book ID</th>
+<th>Book Name</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+<tbody id="bookTable"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let books=[]
+
+function addBook(){
+
+let id=document.getElementById("bookId").value
+let name=document.getElementById("bookName").value
+
+if(id==="" || name===""){
+alert("Enter book details")
+return
+}
+
+books.push({id,name,status:"Available"})
+
+displayBooks()
+
+}
+
+function displayBooks(){
+
+let table=document.getElementById("bookTable")
+table.innerHTML=""
+for(let i=0;i<books.length;i++){
+table.innerHTML+=`
+<tr>
+<td>${books[i].id}</td>
+<td>${books[i].name}</td>
+<td>${books[i].status}</td>
+<td>
+<button onclick="issueBook(${i})">Issue</button>
+<button onclick="returnBook(${i})">Return</button>
+<button onclick="deleteBook(${i})">Delete</button>
+</td>
+</tr>
+}
+}
+function issueBook(i){
+
+books[i].status="Issued"
+
+displayBooks()
+}
+function returnBook(i){
+books[i].status="Available"
+displayBooks()
+}
+function deleteBook(i){
+books.splice(i,1)
+displayBooks()
+}
+function searchBook(){
+let key=document.getElementById("searchBox").value.toLowerCase()
+for(let i=0;i<books.length;i++){
+if(books[i].name.toLowerCase()===key){
+alert("Book Found: "+books[i].name)
+return
+}
+}
+alert("Book Not Found")
+}
+</script>
+</body>
+</html>
